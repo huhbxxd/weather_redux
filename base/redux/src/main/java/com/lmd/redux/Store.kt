@@ -56,6 +56,12 @@ abstract class BaseStore<State : IState>(
 
         return mutableAction
     }
+
+    override fun clear() {
+        subscriptions.forEach {
+            unsubscribe(it)
+        }
+    }
 }
 
 interface IStore<State : IState> {
@@ -63,4 +69,5 @@ interface IStore<State : IState> {
     fun dispatch(action: IAction)
     fun subscribe(subscription: Subscription<State>)
     fun unsubscribe(subscribe: Subscription<State>)
+    fun clear()
 }

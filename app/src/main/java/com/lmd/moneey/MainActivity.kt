@@ -10,37 +10,51 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.lmd.moneey.ui.screens.main.MainScreen
+import com.lmd.moneey.ui.screens.splash.SplashScreen
 import com.lmd.moneey.ui.theme.MoneeyTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MoneeyTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            Screen()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+private fun Screen() {
+    MoneeyTheme {
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Host()
+        }
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    MoneeyTheme {
-        Greeting("Android")
+private fun Host() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = Route.SPLASH) {
+        composable(Route.SPLASH) {
+            SplashScreen()
+        }
+
+        composable(Route.MAIN) {
+            MainScreen()
+        }
     }
+}
+
+object Route {
+    const val SPLASH = "SplashScreen"
+    const val MAIN = "MainScreen"
 }
