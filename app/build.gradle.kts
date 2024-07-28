@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.lmd.moneey"
+    namespace = "com.lmd.weather"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.lmd.moneey"
+        applicationId = "com.lmd.weather"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

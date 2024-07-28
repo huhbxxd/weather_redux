@@ -43,7 +43,7 @@ private fun Screen() {
 private fun Host() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Route.SPLASH) {
+    NavHost(navController = navController, startDestination = Route.MAIN) {
         composable(Route.SPLASH) {
             SplashScreen()
         }

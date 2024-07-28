@@ -9,11 +9,12 @@ import org.koin.dsl.module
 import org.koin.dsl.onClose
 
 val mainModule = module {
-    viewModelOf(::MainViewModel)
 
     factory<IStore<MainState>> {
         MainStore()
     } onClose {
         it?.clear()
     }
+
+    viewModelOf(::MainViewModel)
 }
