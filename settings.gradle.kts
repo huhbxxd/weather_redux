@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Moneey"
 include(":app")
- 
+include(":app:base")
+include(":app:base:redux")
