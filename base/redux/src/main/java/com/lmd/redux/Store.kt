@@ -1,14 +1,30 @@
 package com.lmd.redux
 
+import com.lmd.redux.interfaces.IAction
+import com.lmd.redux.interfaces.IState
+import com.lmd.redux.interfaces.IStore
+import com.lmd.redux.interfaces.Middleware
+import com.lmd.redux.interfaces.Reducer
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+
 abstract class BaseStore<State : IState>(
     initState: State,
     private val middleWares: List<Middleware<State>>,
     private val reducers: List<Reducer<State>>
 ) : IStore<State> {
 
-    internal val subscriptions = arrayListOf<Subscription<State>>()
+    private var _stateFlow = MutableStateFlow(initState)
+    private val subscriptions = arrayListOf<Subscription<State>>()
 
-    private var currentState = initState
+    private var currentState
+        get() = _stateFlow.value
+        set(value) {
+            _stateFlow.update { value }
+        }
+
+    override val stateFlow: StateFlow<State> = _stateFlow
 
     override fun getState(): State = currentState
 

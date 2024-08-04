@@ -1,5 +1,10 @@
 package com.lmd.redux
 
-interface Subscription<State: IState> {
-    fun notify(state: State)
+import com.lmd.redux.interfaces.IState
+
+abstract class Subscription<State: IState> {
+
+    internal fun notify(state: State) {
+
+    }
 }
