@@ -73,8 +73,12 @@ dependencies {
     implementation(libs.koin.compose)
 
     implementation(libs.androidx.room.runtime)
+    implementation(project(":core:network"))
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

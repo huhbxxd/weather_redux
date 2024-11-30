@@ -4,18 +4,22 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+        <option name="gradleJvm" value="corretto-17" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/base" />
+            <option value="$PROJECT_DIR$/base/network" />
             <option value="$PROJECT_DIR$/base/redux" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/network" />
+            <option value="$PROJECT_DIR$/core/network/cities" />
             <option value="$PROJECT_DIR$/core/objects" />
             <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/cities" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

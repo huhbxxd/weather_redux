@@ -15,20 +15,14 @@ abstract class BaseStore<State : IState>(
     private val reducers: List<Reducer<State>>
 ) : IStore<State> {
 
-    private var _stateFlow = MutableStateFlow(initState)
     private val subscriptions = arrayListOf<Subscription<State>>()
 
-    private var currentState
-        get() = _stateFlow.value
-        set(value) {
-            _stateFlow.update { value }
-        }
-
-    override val stateFlow: StateFlow<State> = _stateFlow
+    private var currentState: State = initState
 
     override fun getState(): State = currentState
 
     override fun subscribe(subscription: Subscription<State>) {
+        println("CheckCheck $subscription")
         subscriptions.add(subscription)
         subscription.notify(currentState)
     }

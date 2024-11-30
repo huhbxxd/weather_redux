@@ -12,20 +12,22 @@ import com.lmd.weather.buiseness.redux.ApplicationState
 import com.lmd.weather.rememberStore
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    state: ApplicationState
+) {
     val store = rememberStore<ApplicationState>()
-    val state = store.stateFlow.collectAsState()
+    store.getState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = state.value.toString())
-        Button(onClick = { store.dispatch(MainScreenActions.Increment) }) {
+        Text(text = "state.value.toString()")
+        Button(onClick = {  }) {
             Text(text = "Inc")
         }
 
-        Button(onClick = { store.dispatch(MainScreenActions.Remove) }) {
+        Button(onClick = {  }) {
             Text(text = "Remove")
         }
     }

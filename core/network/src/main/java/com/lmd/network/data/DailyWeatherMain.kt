@@ -1,4 +1,4 @@
-package com.lmd.objects
+package com.lmd.network.data
 
 data class DailyWeatherMain(
     val lat: Double,

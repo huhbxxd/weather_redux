@@ -7,6 +7,7 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        mavenLocal()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -27,3 +28,6 @@ include(":features")
 include(":core")
 include(":core:network")
 include(":core:objects")
+include(":features:cities")
+include(":core:network:cities")
+include(":base:network")
