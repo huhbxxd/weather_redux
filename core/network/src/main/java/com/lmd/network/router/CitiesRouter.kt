@@ -1,7 +1,6 @@
-package com.lmd.cities
+package com.lmd.network.router
 
-import com.lmd.cities.data.cities.Cities
-import com.lmd.network.BaseRouter
+import com.lmd.network.data.cities.Cities
 import io.ktor.client.HttpClient
 import io.ktor.http.parameters
 

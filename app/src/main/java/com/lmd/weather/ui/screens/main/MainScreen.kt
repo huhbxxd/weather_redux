@@ -23,7 +23,7 @@ fun MainScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(text = "state.value.toString()")
-        Button(onClick = {  }) {
+        Button(onClick = { store.dispatch(MainScreenActions.Init) }) {
             Text(text = "Inc")
         }
 

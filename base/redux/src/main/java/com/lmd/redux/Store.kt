@@ -5,13 +5,10 @@ import com.lmd.redux.interfaces.IState
 import com.lmd.redux.interfaces.IStore
 import com.lmd.redux.interfaces.Middleware
 import com.lmd.redux.interfaces.Reducer
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 
 abstract class BaseStore<State : IState>(
     initState: State,
-    private val middleWares: List<Middleware<State>>,
+    private val middlewares: List<Middleware<State>>,
     private val reducers: List<Reducer<State>>
 ) : IStore<State> {
 
@@ -22,7 +19,6 @@ abstract class BaseStore<State : IState>(
     override fun getState(): State = currentState
 
     override fun subscribe(subscription: Subscription<State>) {
-        println("CheckCheck $subscription")
         subscriptions.add(subscription)
         subscription.notify(currentState)
     }
@@ -44,7 +40,7 @@ abstract class BaseStore<State : IState>(
         subscriptions.remove(subscribe)
 
         if (subscriptions.isEmpty()) {
-            middleWares.forEach { it.dispose() }
+            middlewares.forEach { it.dispose() }
         }
     }
 
@@ -60,7 +56,7 @@ abstract class BaseStore<State : IState>(
 
     private fun applyMiddleware(state: State, action: IAction): IAction {
         var mutableAction = action
-        for (ware in middleWares) {
+        for (ware in middlewares) {
             mutableAction = ware.invoke(state, action, ::dispatch)
         }
 

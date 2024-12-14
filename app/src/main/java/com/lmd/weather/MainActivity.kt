@@ -20,6 +20,7 @@ import com.lmd.weather.ui.screens.main.MainScreen
 import com.lmd.weather.buiseness.splash.ScreenOpened
 import com.lmd.weather.ui.screens.splash.SplashScreen
 import com.lmd.weather.ui.theme.WeatherTheme
+import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
@@ -29,7 +30,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Screen()
+            KoinContext {
+                Screen()
+            }
         }
     }
 }

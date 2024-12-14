@@ -1,4 +1,4 @@
-package com.lmd.network
+package com.lmd.network.router
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

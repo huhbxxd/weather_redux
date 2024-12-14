@@ -9,7 +9,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":core:network:cities"))
+    implementation(project(":core:network"))
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)

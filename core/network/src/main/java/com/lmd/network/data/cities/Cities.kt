@@ -1,4 +1,4 @@
-package com.lmd.cities.data.cities
+package com.lmd.network.data.cities
 
 import kotlinx.serialization.Serializable
 

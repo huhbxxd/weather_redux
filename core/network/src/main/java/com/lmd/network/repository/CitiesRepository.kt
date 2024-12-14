@@ -1,6 +1,7 @@
-package com.lmd.cities
+package com.lmd.network.repository
 
-import com.lmd.cities.data.cities.Cities
+import com.lmd.network.router.CitiesRouter
+import com.lmd.network.data.cities.Cities
 
 class CitiesRepository(
     private val router: CitiesRouter

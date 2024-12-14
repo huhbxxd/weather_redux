@@ -16,7 +16,6 @@
             <option value="$PROJECT_DIR$/base/redux" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/network" />
-            <option value="$PROJECT_DIR$/core/network/cities" />
             <option value="$PROJECT_DIR$/core/objects" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/cities" />

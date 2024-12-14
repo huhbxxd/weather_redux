@@ -9,5 +9,5 @@ val networkModule = module {
         HttpClient()
     }
 
-//    loadKoinModules(citiesModule)
+    loadKoinModules(citiesModule)
 }
