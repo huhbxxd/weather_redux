@@ -11,7 +11,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.lmd.redux.Subscription
 import com.lmd.redux.interfaces.IAction
 import com.lmd.redux.interfaces.IStore
 import com.lmd.weather.buiseness.redux.ApplicationState

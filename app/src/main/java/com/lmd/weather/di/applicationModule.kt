@@ -1,6 +1,5 @@
 package com.lmd.weather.di
 
-import com.lmd.redux.Subscription
 import com.lmd.redux.interfaces.IStore
 import com.lmd.weather.buiseness.redux.ApplicationState
 import com.lmd.weather.buiseness.redux.ApplicationStore
