@@ -7,3 +7,17 @@ interface IMiddleware : IDispatcher {
 }
 
 typealias MiddlewareFactory = (ApplicationStore) -> IMiddleware
+
+class ExampleMiddleWare : IMiddleware {
+    override fun setNext(dispatch: IDispatcher) {
+        TODO("Not yet implemented")
+    }
+
+    override fun dispatch(action: IAction) {
+        if (action is IListenerAction) {
+            action.callback {
+                object : IAction {}
+            }
+        }
+    }
+}
