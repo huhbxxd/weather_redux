@@ -9,5 +9,5 @@ interface IRunnableAction : IAction {
 }
 
 interface IListenerAction : IAction {
-    fun callback(block: suspend () -> IAction)
+    val block: suspend (IAction) -> Unit
 }
