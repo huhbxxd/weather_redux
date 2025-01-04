@@ -4,7 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,22 +42,33 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Screen() {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     WeatherTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            val store = koinInject<IStore<ApplicationState>>()
-            val state by store.getStateFlow().collectAsState()
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(snackbarHostState)
+            }
+        ) { padding ->
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                val store = koinInject<IStore<ApplicationState>>()
+                val state by store.getStateFlow().collectAsState()
 
 
-            StoreProvider(store = store) {
-                Host(
-                    dispatchRoute = { route ->
-                        store.dispatch(route)
-                    },
-                    state = state
-                )
+                StoreProvider(store = store) {
+                    Host(
+                        dispatchRoute = { route ->
+                            store.dispatch(route)
+                        },
+                        state = state,
+                        snackbarHostState = snackbarHostState
+                    )
+                }
             }
         }
     }
@@ -61,11 +76,12 @@ private fun Screen() {
 
 @Composable
 private fun Host(
+    snackbarHostState: SnackbarHostState,
     dispatchRoute: (IAction) -> Unit,
     state: ApplicationState
 ) {
     when (state.currentRoute) {
         Route.Splash -> SplashScreen(screenOpened = { dispatchRoute(ScreenOpened) })
-        Route.Cities -> MainScreen(state)
+        Route.Cities -> MainScreen(state = state, snackbarHostState = snackbarHostState)
     }
 }
