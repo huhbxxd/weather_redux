@@ -1,15 +1,44 @@
 package com.lmd.weather.buiseness.redux.middlewares
 
-import com.lmd.weather.buiseness.redux.ApplicationState
+import com.lmd.redux.ApplicationStore
 import com.lmd.redux.interfaces.IAction
-import com.lmd.redux.interfaces.Middleware
+import com.lmd.redux.interfaces.IDispatcher
+import com.lmd.redux.interfaces.IMiddleware
+import com.lmd.redux.interfaces.MiddlewareFactory
+import com.lmd.weather.buiseness.redux.ApplicationState
+import com.lmd.weather.buiseness.redux.MainScreenActions
+import com.lmd.weather.buiseness.redux.middlewares.actions.UpdateValue
 
-class GeneralMiddleWare : Middleware<ApplicationState> {
-    override fun invoke(
-        state: ApplicationState,
-        action: IAction,
-        dispatch: (action: IAction) -> Unit
-    ): IAction {
-        return action
+class GeneralMiddleWare private constructor(
+    private val store: ApplicationStore<ApplicationState>
+) : IMiddleware {
+
+    private var nextDispatcher: IDispatcher? = null
+
+    override fun setNext(dispatch: IDispatcher) {
+        nextDispatcher = dispatch
+    }
+
+    override fun dispatch(action: IAction) {
+        val storeState = store.getState()
+
+        val newAction = if (action is MainScreenActions) {
+            val value = when (action) {
+                MainScreenActions.Increment -> storeState.value + 1
+                else -> 0
+            }
+
+            UpdateValue(value)
+        } else {
+            action
+        }
+
+        nextDispatcher?.dispatch(newAction)
+    }
+
+    class Factory : MiddlewareFactory<ApplicationState> {
+        override fun invoke(store: ApplicationStore<ApplicationState>): IMiddleware {
+            return GeneralMiddleWare(store)
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.lmd.redux.interfaces.IAction
 import com.lmd.redux.interfaces.IDispatcher
 import com.lmd.redux.interfaces.IEventHandler
 import com.lmd.redux.interfaces.IMiddleware
+import com.lmd.redux.interfaces.IState
 import com.lmd.redux.interfaces.MiddlewareFactory
 
 internal class DynamicListenersMiddleware(
@@ -21,14 +22,14 @@ internal class DynamicListenersMiddleware(
 
     override fun dispatch(action: IAction) {
         when (action) {
-            is AddListener ->  eventHandler.subscribe(action.block)
+            is AddListener -> eventHandler.subscribe(action.block)
             is RemoveListener -> eventHandler.unsubscribe(action.block)
         }
         nextDispatcher?.dispatch(action)
     }
 
-    class Factory : MiddlewareFactory {
-        override fun invoke(store: ApplicationStore): IMiddleware {
+    class Factory<State : IState> : MiddlewareFactory<State> {
+        override fun invoke(store: ApplicationStore<State>): IMiddleware {
             return DynamicListenersMiddleware(store)
         }
     }

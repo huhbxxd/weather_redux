@@ -16,18 +16,17 @@ fun MainScreen(
     state: ApplicationState
 ) {
     val store = rememberStore<ApplicationState>()
-    store.getState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "state.value.toString()")
-        Button(onClick = { store.dispatch(MainScreenActions.Init) }) {
+        Text(text = "Value is ${state.value}")
+        Button(onClick = { store.dispatch(MainScreenActions.Increment) }) {
             Text(text = "Inc")
         }
 
-        Button(onClick = {  }) {
+        Button(onClick = { store.dispatch(MainScreenActions.Remove) }) {
             Text(text = "Remove")
         }
     }

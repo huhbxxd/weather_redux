@@ -1,14 +1,16 @@
 package com.lmd.weather.buiseness.redux.reducers
 
 import com.lmd.redux.interfaces.IAction
-import com.lmd.redux.interfaces.Reducer
+import com.lmd.redux.interfaces.IReducer
+import com.lmd.redux.interfaces.IState
 import com.lmd.weather.buiseness.redux.ApplicationState
+import com.lmd.weather.buiseness.redux.middlewares.actions.UpdateValue
 
-class MainReducer : Reducer<ApplicationState> {
-    override fun reduce(state: ApplicationState, action: IAction): ApplicationState {
+class MainReducer : IReducer<ApplicationState> {
+    override fun reduce(appState: ApplicationState, action: IAction): ApplicationState {
         return when (action) {
-
-            else -> state
+            is UpdateValue -> appState.copy(value = action.newValue)
+            else -> appState
         }
     }
 }

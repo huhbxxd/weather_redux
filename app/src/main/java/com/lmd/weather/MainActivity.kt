@@ -43,21 +43,17 @@ private fun Screen() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            val subscription = remember { object : Subscription<ApplicationState>() {} }
-            val store =
-                koinInject<IStore<ApplicationState>>(parameters = { parametersOf(subscription) })
+            val store = koinInject<IStore<ApplicationState>>()
+            val state by store.getStateFlow().collectAsState()
 
-            val state by subscription.subscriptionState.collectAsState()
 
-            state?.let {
-                StoreProvider(store = store) {
-                    Host(
-                        dispatchRoute = { route ->
-                            store.dispatch(route)
-                        },
-                        state = it
-                    )
-                }
+            StoreProvider(store = store) {
+                Host(
+                    dispatchRoute = { route ->
+                        store.dispatch(route)
+                    },
+                    state = state
+                )
             }
         }
     }
