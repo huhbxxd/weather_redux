@@ -1,11 +1,11 @@
 package com.lmd.redux.middlewares
 
 import com.lmd.redux.ApplicationStore
+import com.lmd.redux.actions.AddMiddleWare
+import com.lmd.redux.actions.RemoveMiddleWare
 import com.lmd.redux.interfaces.IAction
 import com.lmd.redux.interfaces.IDispatcher
 import com.lmd.redux.interfaces.IMiddleware
-import com.lmd.redux.interfaces.IState
-import com.lmd.redux.interfaces.ITypedAction
 import com.lmd.redux.interfaces.MiddlewareFactory
 
 internal class DynamicMiddleware(
@@ -15,16 +15,34 @@ internal class DynamicMiddleware(
 
     private var nextDispatcher: IDispatcher? = null
 
+    private val dynamicMiddlewares = mutableListOf<MiddlewareWrapper>()
+
     override fun setNext(dispatch: IDispatcher) {
         nextDispatcher = dispatch
     }
 
     override fun dispatch(action: IAction) {
+        when (action) {
+            is AddMiddleWare -> {
+                dynamicMiddlewares.add(action.wrapper)
+                applyMiddleware()
+            }
 
-        nextDispatcher?.dispatch(action)
+            is RemoveMiddleWare -> {
+                dynamicMiddlewares.removeAll { it.type == action.type }
+                applyMiddleware()
+            }
+
+            else -> nextDispatcher?.dispatch(action)
+        }
     }
 
-    class Factory() : MiddlewareFactory {
+    private fun applyMiddleware() {
+        val newMiddlewares = dynamicMiddlewares.map { it.middleware }
+        applyMiddlewares(middlewares + newMiddlewares)
+    }
+
+    class Factory : MiddlewareFactory {
         override fun invoke(store: ApplicationStore): IMiddleware {
             return DynamicMiddleware(
                 middlewares = store.getMiddlewares(),
@@ -34,11 +52,7 @@ internal class DynamicMiddleware(
     }
 }
 
-data class MiddlewareWrapper<Action : IAction>(
+data class MiddlewareWrapper(
     val type: String,
-    val middleware: IMiddleware
-) {
-    fun matchesAction(action: Action): Boolean {
-        return action is ITypedAction && action.type == type
-    }
-}
+    val middleware: MiddlewareFactory
+)
