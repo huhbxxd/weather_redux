@@ -2,12 +2,12 @@ package com.lmd.redux
 
 import com.lmd.redux.interfaces.IAction
 import com.lmd.redux.interfaces.IEventHandler
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-internal class EventHandler : IEventHandler {
-
-    private val scope = MainScope()
+internal class EventHandler(
+    private val mainScope: CoroutineScope
+) : IEventHandler {
 
     private val subscribers = mutableListOf<suspend (IAction) -> Unit>()
 
@@ -20,7 +20,7 @@ internal class EventHandler : IEventHandler {
     }
 
     override fun notify(action: IAction) {
-        scope.launch {
+        mainScope.launch {
             subscribers.forEach {
                 it.invoke(action)
             }

@@ -6,12 +6,10 @@ import com.lmd.redux.interfaces.IAction
 import com.lmd.redux.interfaces.IDispatcher
 import com.lmd.redux.interfaces.IMiddleware
 import com.lmd.redux.interfaces.MiddlewareFactory
-import com.lmd.weather.buiseness.redux.ApplicationState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 class CitiesMiddleWare private constructor(
-    store: ApplicationStore<ApplicationState>,
+    store: ApplicationStore,
     private val scope: CoroutineScope,
     private val citiesRepository: CitiesRepository
 ) : IMiddleware {
@@ -32,8 +30,8 @@ class CitiesMiddleWare private constructor(
     class Factory(
         private val scope: CoroutineScope,
         private val citiesRepository: CitiesRepository
-    ) : MiddlewareFactory<ApplicationState> {
-        override fun invoke(store: ApplicationStore<ApplicationState>): IMiddleware {
+    ) : MiddlewareFactory {
+        override fun invoke(store: ApplicationStore): IMiddleware {
             return CitiesMiddleWare(
                 scope = scope,
                 citiesRepository = citiesRepository,

@@ -5,18 +5,21 @@ import com.lmd.redux.interfaces.IDispatcher
 import com.lmd.redux.interfaces.IEventHandler
 import com.lmd.redux.interfaces.IReducer
 import com.lmd.redux.interfaces.IState
-import com.lmd.redux.interfaces.IStore
 import com.lmd.redux.interfaces.MiddlewareFactory
 import com.lmd.redux.middlewares.DynamicListenersMiddleware
 import com.lmd.redux.middlewares.DynamicMiddleware
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class ApplicationStore<State : IState>(
-    initState: State,
-    private val rootReducer: IReducer<State>,
-    private vararg val middlewares: MiddlewareFactory<State>
-) : IStore<State>, IDispatcher, IEventHandler by EventHandler() {
+abstract class ApplicationStore(
+    initState: IState,
+    protected val mainScope: CoroutineScope,
+    private val rootReducer: IReducer,
+    private vararg val middlewares: MiddlewareFactory,
+) : IDispatcher, IEventHandler by EventHandler(mainScope = mainScope) {
+
+    protected val state = MutableStateFlow(initState)
 
     private var nextDispatcher: IDispatcher = object : IDispatcher {
         override fun dispatch(action: IAction) {
@@ -28,14 +31,16 @@ class ApplicationStore<State : IState>(
         applyMiddlewares(getMiddlewares())
     }
 
-    override fun getState(): State =
-        state.value
-
-    override fun getStateFlow(): StateFlow<State> =
-        state
+    abstract fun getState(): IState
+    abstract fun getStateFlow(): StateFlow<IState>
 
     override fun dispatch(action: IAction) {
         nextDispatcher.dispatch(action)
+    }
+
+    private fun defaultNext(action: IAction) {
+        state.value = rootReducer.reduce(getState(), action)
+        notify(action)
     }
 
     internal fun getMiddlewares() = listOf(
@@ -44,14 +49,7 @@ class ApplicationStore<State : IState>(
         *middlewares
     )
 
-    private val state = MutableStateFlow(initState)
-
-    private fun defaultNext(action: IAction) {
-        state.value = rootReducer.reduce(getState(), action)
-        notify(action)
-    }
-
-    internal fun applyMiddlewares(middlewares: List<MiddlewareFactory<State>>) {
+    internal fun applyMiddlewares(middlewares: List<MiddlewareFactory>) {
         val reversedMiddlewares = middlewares.toList().reversed()
 
         reversedMiddlewares.forEach { middlewareFactory ->

@@ -6,4 +6,4 @@ interface IMiddleware : IDispatcher {
     fun setNext(dispatch: IDispatcher)
 }
 
-interface MiddlewareFactory<State : IState> : (ApplicationStore<State>) -> IMiddleware
+interface MiddlewareFactory : (ApplicationStore) -> IMiddleware

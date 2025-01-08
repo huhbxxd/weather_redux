@@ -21,7 +21,7 @@ fun MainScreen(
     state: ApplicationState,
     snackbarHostState: SnackbarHostState,
 ) {
-    val store = rememberStore<ApplicationState>()
+    val store = rememberStore()
     val listenerBlock = remember<suspend (IAction) -> Unit> {
         {
             snackbarHostState.showSnackbar("New Action: $it")

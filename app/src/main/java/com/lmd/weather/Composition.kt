@@ -5,19 +5,19 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import com.lmd.redux.interfaces.IState
-import com.lmd.redux.interfaces.IStore
+import com.lmd.weather.buiseness.redux.AppStore
 
-private val LocalStore: ProvidableCompositionLocal<IStore<*>> =
+private val LocalStore: ProvidableCompositionLocal<AppStore> =
     compositionLocalOf { error("No class provide") }
 
 @Suppress("UNCHECKED_CAST")
 @Composable
-fun <AState : IState> rememberStore(): IStore<AState> = LocalStore.current as IStore<AState>
+fun rememberStore(): AppStore = LocalStore.current
 
 @Composable
-fun <AState : IState> StoreProvider(
-    store: IStore<AState>,
-    content: @Composable IStore<AState>.() -> Unit
+fun StoreProvider(
+    store: AppStore,
+    content: @Composable AppStore.() -> Unit
 ) {
     CompositionLocalProvider(LocalStore provides store) {
         store.content()

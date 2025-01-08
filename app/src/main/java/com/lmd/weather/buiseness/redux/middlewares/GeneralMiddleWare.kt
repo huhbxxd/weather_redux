@@ -10,7 +10,7 @@ import com.lmd.weather.buiseness.redux.MainScreenActions
 import com.lmd.weather.buiseness.redux.middlewares.actions.UpdateValue
 
 class GeneralMiddleWare private constructor(
-    private val store: ApplicationStore<ApplicationState>
+    private val store: ApplicationStore
 ) : IMiddleware {
 
     private var nextDispatcher: IDispatcher? = null
@@ -20,7 +20,7 @@ class GeneralMiddleWare private constructor(
     }
 
     override fun dispatch(action: IAction) {
-        val storeState = store.getState()
+        val storeState = store.getState() as ApplicationState
 
         val newAction = if (action is MainScreenActions) {
             val value = when (action) {
@@ -36,8 +36,8 @@ class GeneralMiddleWare private constructor(
         nextDispatcher?.dispatch(newAction)
     }
 
-    class Factory : MiddlewareFactory<ApplicationState> {
-        override fun invoke(store: ApplicationStore<ApplicationState>): IMiddleware {
+    class Factory : MiddlewareFactory {
+        override fun invoke(store: ApplicationStore): IMiddleware {
             return GeneralMiddleWare(store)
         }
     }

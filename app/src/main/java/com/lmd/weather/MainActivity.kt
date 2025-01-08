@@ -16,7 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.lmd.redux.interfaces.IAction
-import com.lmd.redux.interfaces.IStore
+import com.lmd.weather.buiseness.redux.AppStore
 import com.lmd.weather.buiseness.redux.ApplicationState
 import com.lmd.weather.buiseness.redux.Route
 import com.lmd.weather.ui.screens.main.MainScreen
@@ -56,9 +56,8 @@ private fun Screen() {
                     .padding(padding),
                 color = MaterialTheme.colorScheme.background
             ) {
-                val store = koinInject<IStore<ApplicationState>>()
+                val store = koinInject<AppStore>()
                 val state by store.getStateFlow().collectAsState()
-
 
                 StoreProvider(store = store) {
                     Host(
